@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <D3component />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import D3component from './components/HelloWorld2.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    D3component
   }
 }
 </script>
