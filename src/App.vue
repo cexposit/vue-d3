@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import D3component from './components/HelloWorld2.vue'
+import D3component from './components/D3Component.vue'
 
 export default {
   name: 'app',
