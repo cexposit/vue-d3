@@ -19,6 +19,11 @@
     data () {
         return {
             chart: null,
+            svg: null,
+            gx: null,
+            gy: null,
+            width: null,
+            height: null,
         }
     },
 
@@ -29,18 +34,17 @@
     methods: {
 
       drawChart() {
-
         // set the dimensions and margins of the graph
-        var margin = {top: 10, right: 30, bottom: 30, left: 60},
-            width = 460 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom;
+        var margin = {top: 10, right: 30, bottom: 30, left: 60}
+        this.width = 460 - margin.left - margin.right,
+        this.height = 400 - margin.top - margin.bottom;
 
         //var svg = d3.select(this.chart)
         // append the svg object to the body of the page
-        var svg = d3.select("#my_dataviz")
+        this.svg = d3.select("#my_dataviz")
           .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("width", this.width + margin.left + margin.right)
+            .attr("height", this.height + margin.top + margin.bottom)
           .append("g")
             .attr("transform",
                   "translate(" + margin.left + "," + margin.top + ")");
@@ -50,46 +54,69 @@
                 console.log(data);
             })*/
         //Read the data
-        d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv",
+        let positions = []
+        positions.push({
+          x: 0,
+          y: 0,
+        })
+        positions.push({
+          x: 10,
+          y: 10,
+        })
+        positions.push({
+          x: 20,
+          y: 15,
+        })
+        positions.push({
+          x: 30,
+          y: 25,
+        })
+        this.myFunc(positions)
+
+
+        /*d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv",
 
           // When reading the csv, I must format variables:
           this.computeData,
 
           // Now I can use this dataset:
-          function(data) {
-
-            // Add X axis --> it is a date format
-            var x = d3.scaleTime()
-              .domain(d3.extent(data, function(d) { return d.date; }))
-              .range([ 0, width ]);
-            svg.append("g")
-              .attr("transform", "translate(0," + height + ")")
-              .call(d3.axisBottom(x));
-
-            // Add Y axis
-            var y = d3.scaleLinear()
-              .domain([0, d3.max(data, function(d) { return +d.value; })])
-              .range([ height, 0 ]);
-            svg.append("g")
-              .call(d3.axisLeft(y));
-            
-            svg.append("path")
-              .datum(data)
-              .attr("fill", "none")
-              .attr("stroke", "steelblue")
-              .attr("stroke-width", 1.5)
-              .attr("d", d3.line()
-                .x(function(d) { return x(d.date) })
-                .y(function(d) { return y(d.value) })
-                )
-
-        })
+          this.myFunc
+        )*/
       },
       computeData(d) {
         return { 
             date : d3.timeParse("%Y-%m-%d")(d.date), 
             value : d.value 
         }
+      },
+      myFunc (data) {
+        this.gx = d3.scaleTime()
+              .domain(d3.extent(data, function(d) { return d.date; }))
+              .range([ 0, this.width ]);
+        this.svg.append("g")
+              .attr("transform", "translate(0," + this.height + ")")
+              .call(d3.axisBottom(this.gx));
+
+            // Add Y axis
+        this.gy = d3.scaleLinear()
+              .domain([0, d3.max(data, function(d) { return +d.value; })])
+              .range([ this.height, 0 ]);
+        this.svg.append("g")
+              .call(d3.axisLeft(this.gy));
+
+        let lineGenerator = d3.line()
+            .x(function(d) { return d.x })
+            .y(function(d) { return d.y })
+
+        console.log(data)
+            
+        this.svg.append("path")
+              .datum(data)
+              .attr("fill", "none")
+              .attr("stroke", "black")
+              .attr("stroke-width", "1px")
+              .attr('d', lineGenerator)
+
       }
     },
 
