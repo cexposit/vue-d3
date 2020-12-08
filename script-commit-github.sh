@@ -1,11 +1,14 @@
-commitMessage=$1
+read -p "# Enter your message in the commit: " message
 
-git rm --cached -r .
-git remote rm origin
-git init
-git add *
-git config --global user.email "cexposit@ull.edu.es"
-git config --global user.name "cexposit"
-git commit -m "${commitMessage}"
-git remote add origin https://github.com/cexposit/vue-d3
-git push -u origin master
+git add .
+git commit -m "${message}"
+
+#if [ -n "$(git status - porcelain)" ];
+#then
+#	echo "IT IS CLEAN"
+#else
+	git status
+	echo "Pushing data to remote GitHub repository:"
+	git push -u origin master
+	echo "Done!"
+#fi
